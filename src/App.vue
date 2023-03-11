@@ -9,8 +9,10 @@ import TheWelcome from
   <div id="app">
   <header>
   <h1>{{sitename}}</h1>
-  <button @click="showCheckout">{{ this.cart.length }}
-  Checkout</button>
+  <button @click="showCheckout">{{totalItemsInTheCart}}
+  <font-awesome-icon icon="fa-solid fa-cart-shopping" />
+  Checkout
+</button>
   </header>
   <main>
   <component :is="currentView"></component>
@@ -31,61 +33,15 @@ methods: { showCheckout() {
 if (this.currentView === SubjectList) {this.currentView = Checkout}
 else {this.currentView = SubjectList}
 }}
+,
+computed: {
+  totalItemsInTheCart: function () {
+  return this.cart.length || "";
+  },
+  }
+
   };
   </script>
 
 <style scoped>
-body{
-  font-family: Arial, Arial, Arial;
-  text-align: center;
-}
-
-h1{
-  font-size: 250%;
-}
-
-
-
-#rcorners2 {
-    border-radius: 25px;
-    border: 2px solid navy;
-    padding: 20px; 
-    width: 230px;
-    height: 230px;  
-  }
-
-  p{
-    font-family: Arial, Arial, Arial;
-    font-size: 120%;
-  }
-
-  img{
-    width: 100px;
-    height: 100px;
-  }
-  
-  .button1{
-    background-color: grey;
-    font-size: 250%;
-  }
-
-  button{
-    background-color: green;
-    font-size: 140%;
-  }
-
-  html{
-    background-color: rgb(218, 218, 196);
-  }
-
-  .button2{
-    background-color: grey;
-    font-size: 140%;
-
-  }
-
-  #star{
-    width: 200px;
-    height: 200px;
-  }
   </style>
