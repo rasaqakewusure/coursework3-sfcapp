@@ -36,7 +36,8 @@ import TheWelcome from
 
   </header>
   <main>
-  <component :is="currentView" :sortedProducts="sortedProducts" :imagesBaseURL="imagesBaseURL"></component>
+  <component :is="currentView" :sortedProducts="sortedProducts" :imagesBaseURL="imagesBaseURL" :cart="cart" 
+  @add-item-to-cart="addItemToCart"></component>
   </main>
   </div>
   </template>
@@ -44,14 +45,14 @@ import TheWelcome from
   import SubjectList from "./components/SubjectList.vue";
   import Checkout from "./components/Checkout.vue";
 
-  import subjects from "./assets/json/subjects.json";
+  //import subjects from "./assets/json/subjects.json";
   
   export default {
 name: "App",
 data() { return { 
 sitename: "Show all lessons",
-subjects : subjects,
-//subjects: [],
+//subjects : subjects,
+subjects: [],
 imagesBaseURL:"",
 //imagesBaseURL:"https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
 serverURL:"https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
@@ -60,6 +61,27 @@ testConsole: true,
 showTestConsole: true,
 currentView: SubjectList } },
 components: { SubjectList, Checkout },
+created: function () {
+               let webstore = this;
+                //GET all lessons
+              
+                //fetch("http://localhost:3000/collections/products").then(
+                fetch("https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects").then(
+                    function (response) {
+                        response.json().then(
+                            function (json) {
+                                //alert(json);
+                                //console.log(json);
+                                webstore.subjects = json;
+                            }
+                        )
+                    }
+                );
+                  
+                //if ("serviceWorker" in navigator) {
+                //navigator.serviceWorker.register("serviceworker.js");
+//}
+            },
 methods: { showCheckout() {
 if (this.currentView === SubjectList) {this.currentView = Checkout}
 else {this.currentView = SubjectList}
@@ -77,6 +99,10 @@ else {this.currentView = SubjectList}
                 window.location.reload();
             },
 
+            addItemToCart: function (subject) {
+                    this.cart.push(subject._id);
+                },
+
             unregisterAllServiceWorkers() {
                 navigator.serviceWorker.getRegistrations().then(function (registrations) {
                     for (let registration of registrations) {
@@ -87,8 +113,7 @@ else {this.currentView = SubjectList}
             },
 
 
-}
-,
+},
 computed: {
   totalItemsInTheCart: function () {
   return this.cart.length || "";
@@ -100,12 +125,12 @@ computed: {
   return -1
   }
   return this.subjects.sort(compare);
-},
+}
 
 
-  }
+}
 
-  };
+}
   </script>
 
 <style scoped>
