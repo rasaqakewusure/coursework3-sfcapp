@@ -13,6 +13,27 @@ import TheWelcome from
   <font-awesome-icon icon="fa-solid fa-cart-shopping" />
   Checkout
 </button>
+<div v-if="testConsole && showTestConsole">
+  <button @click="deleteAllCaches" class="test-elem">
+    <!--Look for icon for delete-->
+                Delete All Caches
+                </button>
+
+                <button @click="reloadPage" class="test-elem">
+                 <!--Look for icon for reload-->
+                Reload Page
+                </button>
+
+                <button @click="unregisterAllServiceWorkers" class="test-elem">
+                  <font-awesome-icon icon="fa-brands fa-uniregistry" />
+                Unregister All ServiceWorkers
+                </button>
+
+
+            <strong class="test-elem">HTTPS Test: </strong>
+            <a v-bind:href="serverURL" target="_blank">link</a>
+</div>
+
   </header>
   <main>
   <component :is="currentView"></component>
@@ -25,14 +46,42 @@ import TheWelcome from
   
   export default {
 name: "App",
-data() { return { sitename: "Show all lessons",
+data() { return { 
+sitename: "Show all lessons",
+serverURL: "https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
 cart: [],
+testConsole: true,
+showTestConsole: true,
 currentView: SubjectList } },
 components: { SubjectList, Checkout },
 methods: { showCheckout() {
 if (this.currentView === SubjectList) {this.currentView = Checkout}
 else {this.currentView = SubjectList}
-}}
+},
+   deleteAllCaches() {
+                    caches.keys().then(function(names) {
+                        for (let name of names)
+                        caches.delete(name);
+                    });
+                    console.log("All Caches Deleted");
+                },
+
+                //Reload page
+            reloadPage() {
+                window.location.reload();
+            },
+
+            unregisterAllServiceWorkers() {
+                navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                    for (let registration of registrations) {
+                        registration.unregister()
+                    }
+                });
+                console.log("ServiceWorkers Unregistered");
+            },
+
+
+}
 ,
 computed: {
   totalItemsInTheCart: function () {
