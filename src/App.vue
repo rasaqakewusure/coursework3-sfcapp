@@ -36,19 +36,25 @@ import TheWelcome from
 
   </header>
   <main>
-  <component :is="currentView"></component>
+  <component :is="currentView" :sortedProducts="sortedProducts" :imagesBaseURL="imagesBaseURL"></component>
   </main>
   </div>
   </template>
   <script>
   import SubjectList from "./components/SubjectList.vue";
   import Checkout from "./components/Checkout.vue";
+
+  import subjects from "./assets/json/subjects.json";
   
   export default {
 name: "App",
 data() { return { 
 sitename: "Show all lessons",
-serverURL: "https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
+subjects : subjects,
+//subjects: [],
+imagesBaseURL:"",
+//imagesBaseURL:"https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
+serverURL:"https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
 cart: [],
 testConsole: true,
 showTestConsole: true,
@@ -87,6 +93,16 @@ computed: {
   totalItemsInTheCart: function () {
   return this.cart.length || "";
   },
+  sortedProducts() {
+  function compare(a, b) {
+  if (a.price > b.price) return 1;
+  if (a.price < b.price) return -1;
+  return -1
+  }
+  return this.subjects.sort(compare);
+},
+
+
   }
 
   };
