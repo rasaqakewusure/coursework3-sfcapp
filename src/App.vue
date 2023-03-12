@@ -37,7 +37,7 @@ import TheWelcome from
   </header>
   <main>
   <component :is="currentView" :sortedProducts="sortedProducts" :imagesBaseURL="imagesBaseURL" :cart="cart" 
-  @add-item-to-cart="addItemToCart"></component>
+  @add-item-to-cart="addItemToCart" @remove-cart="removeCart"></component>
   </main>
   </div>
   </template>
@@ -47,7 +47,7 @@ import TheWelcome from
 
   //import subjects from "./assets/json/subjects.json";
   
-  export default {
+export default {
 name: "App",
 data() { return { 
 sitename: "Show all lessons",
@@ -57,11 +57,28 @@ imagesBaseURL:"",
 //imagesBaseURL:"https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
 serverURL:"https://lessonsapp-env.eba-8pdfpj2u.us-east-1.elasticbeanstalk.com/collections/subjects",
 cart: [],
+order: {
+                    name: "",
+                    phone: "",
+                    surname: "",
+                    address: "",
+                    city: "",
+                    state: "",
+                    zip: "",
+                    method: "Home",
+                },
+                states: {
+                    AL: "Alabama",
+                    AR: "Arizona",
+                    CA: "California",
+                    NV: "Nevada"
+                },
 testConsole: true,
 showTestConsole: true,
 currentView: SubjectList } },
 components: { SubjectList, Checkout },
 created: function () {
+
                let webstore = this;
                 //GET all lessons
               
@@ -78,9 +95,9 @@ created: function () {
                     }
                 );
                   
-                //if ("serviceWorker" in navigator) {
-                //navigator.serviceWorker.register("serviceworker.js");
-//}
+                if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("serviceworker.js");
+}
             },
 methods: { showCheckout() {
 if (this.currentView === SubjectList) {this.currentView = Checkout}
@@ -99,6 +116,14 @@ else {this.currentView = SubjectList}
                 window.location.reload();
             },
 
+            removeCart(subject) {
+                    let i = this.cart.indexOf(subject._id);
+                    if (i > -1) {
+                        this.cart.splice(i, 1);
+                    }
+                    subject.availableInventory + 1;
+                },
+
             addItemToCart: function (subject) {
                     this.cart.push(subject._id);
                 },
@@ -111,6 +136,10 @@ else {this.currentView = SubjectList}
                 });
                 console.log("ServiceWorkers Unregistered");
             },
+
+
+
+
 
 
 },
