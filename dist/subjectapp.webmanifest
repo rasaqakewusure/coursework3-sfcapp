@@ -1,0 +1,35 @@
+{
+    "name": "Lessons web app",
+    "short_name": "Lessons",
+    "description": "My online lessons app",
+    "icons": [
+    {
+    "src": "history.png",
+    "sizes": "32x32",
+    "type": "image/png"
+    },
+    {
+    "src": "pen.png",
+    "sizes": "512x512",
+    "type": "image/png"
+    },
+    {
+        "src":"foodtech.png",
+        "sizes":"512x512",
+        "type": "image/png"
+    },
+    {
+        "src":"music.png",
+        "sizes":"512x512",
+        "type":"image/png"
+    },
+    {
+        "src":"physicaleducation.png",
+        "sizes":"512x512",
+        "type":"image/png"
+    }
+    ],
+    "start_url": "Individual_Work.html",
+    "display": "fullscreen",
+    "background_color": "#260bca"
+    }
